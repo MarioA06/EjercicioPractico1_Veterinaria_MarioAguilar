@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{plantilla/base :: cabecera}"></head>
+    <body>
+        <header th:replace="~{plantilla/base :: encabezado}"></header>
+        <nav th:replace="~{plantilla/base :: navegacion}"></nav>
+
+        <main class="container py-4">
+            <h2 th:text="${atencionVeterinaria.codigoServicio == null}
+                ? 'Agregar servicio' : 'Editar servicio'"></h2>
+
+            <form th:action="@{/servicios/guardar}"
+                  th:object="${atencionVeterinaria}"
+                  method="post" class="card card-body">
+
+                <input type="hidden" th:field="*{codigoServicio}">
+
+                <div class="mb-3">
+                    <label for="nombreServicio" class="form-label">Nombre</label>
+                    <input type="text" th:field="*{nombreServicio}"
+                           class="form-control" maxlength="100" required>
+                    <div class="text-danger" th:errors="*{nombreServicio}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="tipoElegido" class="form-label">Tipo de servicio</label>
+                    <select id="tipoElegido"
+                            th:field="*{tipoServicio.codigoTipo}"
+                            class="form-select" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option th:each="tipo : ${tiposDisponibles}"
+                                th:value="${tipo.codigoTipo}"
+                                th:text="${tipo.nombreTipo}"></option>
+                    </select>
+                    <div class="text-danger" th:errors="*{tipoServicio}"></div>
+                    <div class="text-danger"
+                         th:errors="*{tipoServicio.codigoTipo}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="costoServicio" class="form-label">Precio (₡)</label>
+                    <input type="number" th:field="*{costoServicio}"
+                           class="form-control" min="0.01"
+                           max="999999.99" step="0.01" required>
+                    <div class="text-danger" th:errors="*{costoServicio}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="duracionMinutos" class="form-label">
+                        Duración en minutos
+                    </label>
+                    <input type="number" th:field="*{duracionMinutos}"
+                           class="form-control" min="1" step="1" required>
+                    <div class="text-danger" th:errors="*{duracionMinutos}"></div>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a th:href="@{/servicios}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </main>
+
+        <footer th:replace="~{plantilla/base :: pie}"></footer>
+    </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{plantilla/base :: cabecera}"></head>
+    <body>
+        <header th:replace="~{plantilla/base :: encabezado}"></header>
+        <nav th:replace="~{plantilla/base :: navegacion}"></nav>
+
+        <main class="container py-4">
+            <h2>Servicios veterinarios</h2>
+            <div th:replace="~{plantilla/base :: avisos}"></div>
+
+            <a th:href="@{/servicios/nuevo}" class="btn btn-success mb-3">
+                Agregar servicio
+            </a>
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Tipo</th>
+                            <th>Precio (₡)</th>
+                            <th>Duración (minutos)</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="atencion : ${atenciones}">
+                            <td th:text="${atencion.nombreServicio}"></td>
+                            <td th:text="${atencion.tipoServicio.nombreTipo}"></td>
+                            <td th:text="${#numbers.formatDecimal(atencion.costoServicio, 1, 2)}"></td>
+                            <td th:text="${atencion.duracionMinutos}"></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm"
+                                   th:href="@{/servicios/editar/{codigo}(codigo=${atencion.codigoServicio})}">
+                                    Editar
+                                </a>
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        data-bs-toggle="modal"
+                                        th:data-bs-target="|#eliminarServicio${atencion.codigoServicio}|">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p th:if="${#lists.isEmpty(atenciones)}">
+                No hay servicios registrados.
+            </p>
+
+            <div th:each="atencion : ${atenciones}"
+                 class="modal fade"
+                 th:id="|eliminarServicio${atencion.codigoServicio}|"
+                 tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar eliminación</h5>
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                ¿Desea eliminar el servicio
+                                <strong th:text="${atencion.nombreServicio}"></strong>?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            <form th:action="@{/servicios/eliminar}" method="post">
+                                <input type="hidden" name="codigoServicio"
+                                       th:value="${atencion.codigoServicio}">
+                                <button type="submit" class="btn btn-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{plantilla/base :: pie}"></footer>
+    </body>
+</html>

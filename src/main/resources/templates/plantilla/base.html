@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="cabecera">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title th:text="#{clinica.nombre}">Clínica Veterinaria</title>
+        <link th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}"
+              rel="stylesheet">
+        <script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"
+                defer></script>
+    </head>
+
+    <body>
+        <header th:fragment="encabezado" class="bg-success text-white py-4">
+            <div class="container">
+                <h1 th:text="#{clinica.nombre}">Clínica Veterinaria</h1>
+                <p class="mb-0" th:text="#{clinica.lema}">Cuidamos a tu mascota</p>
+            </div>
+        </header>
+
+        <nav th:fragment="navegacion" class="bg-light border-bottom py-3">
+            <div class="container d-flex flex-wrap gap-3">
+                <a th:href="@{/}" th:text="#{menu.inicio}">Inicio</a>
+                <a th:href="@{/tipos}" th:text="#{menu.tipos}">Tipos</a>
+                <a th:href="@{/servicios}" th:text="#{menu.servicios}">Servicios</a>
+                <a th:href="@{/citas}" th:text="#{menu.citas}">Citas</a>
+                <a th:href="@{/consultas}" th:text="#{menu.consultas}">Consultas</a>
+            </div>
+        </nav>
+
+        <div th:fragment="avisos">
+            <div th:if="${exito}" class="alert alert-success"
+                 role="alert" th:text="${exito}"></div>
+            <div th:if="${error}" class="alert alert-danger"
+                 role="alert" th:text="${error}"></div>
+        </div>
+
+        <footer th:fragment="pie" class="bg-dark text-white text-center py-3 mt-5">
+            <p class="mb-0" th:text="#{pie.derechos}">Derechos reservados</p>
+        </footer>
+    </body>
+</html>

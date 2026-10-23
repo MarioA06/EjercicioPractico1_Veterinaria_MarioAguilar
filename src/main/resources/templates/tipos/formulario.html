@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{plantilla/base :: cabecera}"></head>
+    <body>
+        <header th:replace="~{plantilla/base :: encabezado}"></header>
+        <nav th:replace="~{plantilla/base :: navegacion}"></nav>
+
+        <main class="container py-4">
+            <h2 th:text="${tipoAtencion.codigoTipo == null}
+                ? 'Agregar tipo de servicio' : 'Editar tipo de servicio'"></h2>
+
+            <form th:action="@{/tipos/guardar}"
+                  th:object="${tipoAtencion}" method="post"
+                  class="card card-body">
+                <input type="hidden" th:field="*{codigoTipo}">
+
+                <div class="mb-3">
+                    <label for="nombreTipo" class="form-label">Nombre</label>
+                    <input type="text" th:field="*{nombreTipo}"
+                           class="form-control" maxlength="100" required>
+                    <div class="text-danger" th:errors="*{nombreTipo}"></div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="detalleTipo" class="form-label">Descripción</label>
+                    <textarea th:field="*{detalleTipo}" class="form-control"
+                              maxlength="255" rows="3"></textarea>
+                    <div class="text-danger" th:errors="*{detalleTipo}"></div>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <a th:href="@{/tipos}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
+        </main>
+
+        <footer th:replace="~{plantilla/base :: pie}"></footer>
+    </body>
+</html>

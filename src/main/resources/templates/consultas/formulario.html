@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{plantilla/base :: cabecera}"></head>
+    <body>
+        <header th:replace="~{plantilla/base :: encabezado}"></header>
+        <nav th:replace="~{plantilla/base :: navegacion}"></nav>
+
+        <main class="container py-4">
+            <h2>Consultas a la clínica</h2>
+            <div th:replace="~{plantilla/base :: avisos}"></div>
+
+            <form th:action="@{/consultas}" method="post"
+                  class="card card-body">
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Su nombre</label>
+                    <input id="nombre" name="nombre" type="text"
+                           class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="correo" class="form-label">Correo electrónico</label>
+                    <input id="correo" name="correo" type="email"
+                           class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mascota" class="form-label">Nombre de la mascota</label>
+                    <input id="mascota" name="mascota" type="text"
+                           class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje" class="form-label">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="4"
+                              class="form-control" required></textarea>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-success">
+                        Enviar consulta
+                    </button>
+                </div>
+            </form>
+        </main>
+
+        <footer th:replace="~{plantilla/base :: pie}"></footer>
+    </body>
+</html>

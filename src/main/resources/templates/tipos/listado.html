@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{plantilla/base :: cabecera}"></head>
+    <body>
+        <header th:replace="~{plantilla/base :: encabezado}"></header>
+        <nav th:replace="~{plantilla/base :: navegacion}"></nav>
+
+        <main class="container py-4">
+            <h2>Tipos de servicio</h2>
+            <div th:replace="~{plantilla/base :: avisos}"></div>
+
+            <a th:href="@{/tipos/nuevo}" class="btn btn-success mb-3">
+                Agregar tipo
+            </a>
+
+            <div class="table-responsive">
+                <table class="table table-striped align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Cantidad de servicios</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="tipo : ${tiposAtencion}">
+                            <td th:text="${tipo.nombreTipo}"></td>
+                            <td th:text="${tipo.detalleTipo}"></td>
+                            <td th:text="${#lists.size(tipo.serviciosAsociados)}"></td>
+                            <td>
+                                <a class="btn btn-warning btn-sm"
+                                   th:href="@{/tipos/editar/{codigo}(codigo=${tipo.codigoTipo})}">
+                                    Editar
+                                </a>
+                                <button class="btn btn-danger btn-sm"
+                                        type="button"
+                                        data-bs-toggle="modal"
+                                        th:data-bs-target="|#eliminarTipo${tipo.codigoTipo}|">
+                                    Eliminar
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p th:if="${#lists.isEmpty(tiposAtencion)}">
+                No hay tipos de servicio registrados.
+            </p>
+
+            <div th:each="tipo : ${tiposAtencion}"
+                 class="modal fade"
+                 th:id="|eliminarTipo${tipo.codigoTipo}|"
+                 tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Confirmar eliminación</h5>
+                            <button type="button" class="btn-close"
+                                    data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>
+                                ¿Desea eliminar el tipo
+                                <strong th:text="${tipo.nombreTipo}"></strong>?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            <form th:action="@{/tipos/eliminar}" method="post">
+                                <input type="hidden" name="codigoTipo"
+                                       th:value="${tipo.codigoTipo}">
+                                <button type="submit" class="btn btn-danger">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer th:replace="~{plantilla/base :: pie}"></footer>
+    </body>
+</html>
